@@ -1,33 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-bool responseOk(int status){
-
-  return status >= 200 && status <= 299;
-
-}
-
-Future<List<String>> getAccountKeys() async {
-
-  final baseURL = "";
-  final defaultHeaders = {
-
-    "Content-Type" : "application/json",
-
-  };
-
-  final response = await http.get(
-    
-    Uri.parse(baseURL),
-    headers: defaultHeaders,
-  
-  );
-
-  if(responseOk(response.statusCode)){
-
-    final dynamic contents = jsonDecode(response.body);
-    if()
-  }
-
-
+abstract class Credentials {
+  static final String baseURL =
+      'https://run31.ploomes.com/Assets/PloomesServicesSettings/settings.txt';
+  static final String frontEndScript =
+      "<script>var elemento = document.querySelector('a.button.button-white-no-border.pull-right.nowrap'); if (elemento) { elemento.style.display = 'none'; }</script>";
 }
