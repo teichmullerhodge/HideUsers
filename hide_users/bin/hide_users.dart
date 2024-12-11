@@ -1,5 +1,5 @@
 import 'package:hide_users/ploomes.dart';
-
+import 'package:hide_users/utils.dart' as utils;
 Future<void> main() async {
   final dynamic ploomesList = await PloomesCollections.getAccountsData();
   final List<String> accountKeys = [];
@@ -18,9 +18,10 @@ Future<void> main() async {
     final accountInfo = await account.getAccountInfo();
     if(account.isSuccessfulResponse) {
 
-      final dynamic usersInfo = await account.getUsersAccount();
-      for (final users in usersInfo.contents) {
-        print(users['Name']);
+      final utils.RequestContext usersInfo = await account.getUsersAccount();
+      final dynamic data = usersInfo.contents['value'];
+      for(final userInfo in data){
+          print(userInfo['Name']);
       }
     }
   }

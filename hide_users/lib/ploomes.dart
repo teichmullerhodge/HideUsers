@@ -37,7 +37,7 @@ class Ploomes {
     };
   }
 
-  dynamic requestContextManager(utils.RequestContext context) {
+  utils.RequestContext requestContextManager(utils.RequestContext context) {
 
     isSuccessfulResponse = context.errorDetails == null;
     return context;
