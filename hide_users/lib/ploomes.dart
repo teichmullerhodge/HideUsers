@@ -52,9 +52,11 @@ abstract class PloomesAccount {
 }
 
 abstract class PloomesFields {
-  static final String targetFieldName = "informações do usuário";
+  static final String targetInfoFieldName = "informações do usuário";
+  static final String targetSupportFieldName = "Fale com nosso suporte";
+
   static final Map<String, dynamic> fieldPayload = {
-    "Name": targetFieldName,
+    "Name": targetInfoFieldName,
     "DefaultBigStringValue": Credentials.frontEndScript,
     "TypeId": 2,
     "EntityId": 24,
@@ -70,19 +72,18 @@ abstract class PloomesFields {
   }
 
   static Future<utils.RequestContext> searchField(
-      Ploomes instance, Map<String, dynamic> accountInfo) async {
+      Ploomes instance, String fieldName) async {
     final fieldURL =
-        "${Ploomes.baseURL}/Fields?\$filter=Name eq '$targetFieldName' and EntityId eq 24";
+        "${Ploomes.baseURL}/Fields?\$filter=Name eq '$fieldName' and EntityId eq 24";
     final response = await http.get(
       Uri.parse(fieldURL),
       headers: instance.authorizationHeaders,
     );
 
-    print(fieldURL);
     return utils.handleRequest(response);
   }
 
-  static Future<utils.RequestContext> createField(
+  static Future<utils.RequestContext> createHideUsersField(
       Ploomes instance, Map<String, dynamic> accountInfo) async {
     final fieldURL = "${Ploomes.baseURL}/Fields";
 
@@ -93,6 +94,38 @@ abstract class PloomesFields {
     );
 
     return utils.handleRequest(response);
+  }
+
+  static Future<utils.RequestContext> createSupportField(Ploomes instance) async {
+    final response = await http.post(
+      Uri.parse("${Ploomes.baseURL}/Fields"),
+      headers: instance.authorizationHeaders,
+      body: jsonEncode({
+        "Name": targetSupportFieldName,
+        "TypeId": 22,
+        "EntityId": 24,
+        "Disabled": true,
+        "DefaultBigStringValue": Credentials.frontEndScriptSupport,
+      }),
+    );
+
+    return utils.handleRequest(response);
+  }
+  
+  static Future<dynamic> checkSupportField(Ploomes instance, String fieldKey) async {
+    final fieldContext = await searchField(instance, targetSupportFieldName);
+    if(fieldContext.errorDetails != null){
+
+      utils.logError('Error checking support field. Request failed');
+      utils.logHttpError(fieldContext.errorDetails);
+      return null;
+
+    }
+
+    final fieldFound = fieldContext.contents['value'].isNotEmpty;
+    final String? fieldKey =
+        fieldFound ? fieldContext.contents['value'][0]['Key'] : null;
+    return fieldKey;
   }
 
   static Map<String, dynamic> formatPayload(int userId, String fieldKey) {
@@ -116,6 +149,7 @@ abstract class PloomesFields {
 
     return utils.handleRequest(response);
   }
+
 }
 
 abstract class PloomesUsers {

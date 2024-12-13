@@ -3,4 +3,5 @@
 .dart_tool/
 .env
 /bin/app.elf
+/bin/app.exe
 /bin/*.xlsx

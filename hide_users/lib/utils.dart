@@ -81,3 +81,10 @@ void logWarning(String warningMessage) {
   final resetColor = '\x1B[0m';
   stderr.writeln('$yellowColor Warning: $warningMessage! $resetColor');
 }
+
+///Logs an HTTP error message to the console with the red color.
+void logHttpError(Map<String, dynamic>? errorDetails) {
+  final redColor = '\x1B[31m';
+  final resetColor = '\x1B[0m';
+  stderr.writeln('$redColor Error: $errorDetails! $resetColor');
+}
