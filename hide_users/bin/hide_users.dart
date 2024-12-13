@@ -16,7 +16,7 @@ Future<bool> validateAccounts(List<String> accountKeys) async {
   for(final keys in accountKeys){
 
     final Ploomes ploomesInstance = Ploomes(keys);
-    bool isAccountWithScript = await Validator.ValidateAccount(ploomesInstance);
+    bool isAccountWithScript = await Validator.validateAccount(ploomesInstance);
     if(isAccountWithScript){
       utils.logSuccess('Account $keys has the script.');
     } else {

@@ -7,7 +7,7 @@ import 'utils.dart' as utils;
 class Validator {
 
 
-  static Future<bool> ValidateAccount(Ploomes instance) async {
+  static Future<bool> validateAccount(Ploomes instance) async {
 
     final accountContext = await instance.getAccountInfo();
     
